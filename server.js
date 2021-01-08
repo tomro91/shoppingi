@@ -89,7 +89,7 @@ app.get("/login",function(req,res){
 
   //======================== GET DASHBOARD PAGE ========================//
   app.get('/dashboard', (req, res) => {
-        res.sendFile(__dirname + '/index.html');
+        res.sendFile(__dirname + '/dashboard.html');
 });
  //======================== GET userProfile PAGE ========================//
 app.get('/profile', (req, res) => {
