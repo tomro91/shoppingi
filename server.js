@@ -20,7 +20,7 @@ const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const host = '0.0.0.0';
 const port = process.env.PORT||5000;
 
-/*
+
 const client = new Client({
   user: "postgres",
   password: "Aa123456",
@@ -28,7 +28,7 @@ const client = new Client({
   port: 5432,
   database: "shoppingsitedb"
 })
-*/
+
 //======================FUNCTIONS====================================
 function encryptData(data) {
     try {
@@ -70,7 +70,7 @@ app.get("/signup",function(req,res){
   res.sendFile(__dirname+"/register.html",);
     });
 app.get("/favicon.ico",function(req,res){
-  res.redirect("/login")
+  res.redirect("/login");
 })
 //======================== GET LOGIN PAGE ========================//
 app.get("/login",function(req,res){
