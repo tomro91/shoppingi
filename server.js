@@ -18,7 +18,7 @@ const keySize = 32;
 const algorithm = 'aes-256-cbc';
 const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const host = '0.0.0.0';
-const port = process.env.PORT||5000;
+const port = process.env.PORT||3000 ;
 
 
 const client = new Client({
