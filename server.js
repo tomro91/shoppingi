@@ -69,7 +69,9 @@ function encryptData(data) {
 app.get("/signup",function(req,res){
   res.sendFile(__dirname+"/register.html",);
     });
-
+app.get("/favicon.ico",function(req,res){
+  res.redirect("/login")
+})
 //======================== GET LOGIN PAGE ========================//
 app.get("/login",function(req,res){
  //if there is no cookies => go to login page
