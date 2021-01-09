@@ -167,11 +167,8 @@ app.post("/signup",function(req,res){
         );
      }
         
-        let transporter = nodemailer.createTransport({
-          host: 'smtp.gmail.com',
-          port: 587,
-          ignoreTLS: false,
-          secure: false,
+        var transporter = nodemailer.createTransport("SMTP",{
+ 
             auth: {
               user: 'rwzntm@gmail.com',
               pass: 'OrtBraude3112@'
