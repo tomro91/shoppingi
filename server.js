@@ -22,11 +22,11 @@ const port = process.env.PORT||3000 ;
 
 
 const client = new Client({
-  user: "postgres",
-  password: "Aa123456",
-  host: "localhost",
+  user: "uxutkqppeiihfi",
+  password: "7556fa45fb6e4cc26be0ca1219e2e99072934d1e293b968d7a060e03505ba864",
+  host: "ec2-176-34-114-78.eu-west-1.compute.amazonaws.com",
   port: 5432,
-  database: "shoppingsitedb"
+  database: "d2831bevpqn6sp"
 })
 
 //======================FUNCTIONS====================================
