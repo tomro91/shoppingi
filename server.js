@@ -167,14 +167,16 @@ app.post("/signup",function(req,res){
         );
      }
         
-        let transporter = nodemailer.createTransport(smtpTransport({
-            service: 'gmail',
-            host:'smtp.gmail.com',
+        let transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 587,
+          ignoreTLS: false,
+          secure: false,
             auth: {
               user: 'rwzntm@gmail.com',
               pass: 'OrtBraude3112@'
             }
-          }));
+          });
                 
                 var mailOptions = {
                   from: 'rwzntm@gmail.com',
