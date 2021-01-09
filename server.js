@@ -165,7 +165,7 @@ app.post("/signup",function(req,res){
           }
         );
      }
-        
+        /** 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -189,6 +189,8 @@ app.post("/signup",function(req,res){
                     console.log('Email sent: ' + info.response);
                   }
               });
+              */
+             res.redirect("/login");
     });//hash
 });//salt
 }//else
