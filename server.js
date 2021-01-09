@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 var nodemailer = require('nodemailer');
+var smtpTransport=require('nodemailer-smtp-transport');
 var urlCrypt = require('url-crypt')('~{ry*I)==yU/]9<7DPk!Hj"R#:-/Z7(hTBnlRS=4CXF');
 app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
@@ -165,14 +166,15 @@ app.post("/signup",function(req,res){
           }
         );
      }
-        /** 
-        let transporter = nodemailer.createTransport({
+        
+        let transporter = nodemailer.createTransport(smtpTransport({
             service: 'gmail',
+            host:'smtp.gmail.com',
             auth: {
               user: 'rwzntm@gmail.com',
               pass: 'OrtBraude3112@'
             }
-          });
+          }));
                 
                 var mailOptions = {
                   from: 'rwzntm@gmail.com',
@@ -189,7 +191,7 @@ app.post("/signup",function(req,res){
                     console.log('Email sent: ' + info.response);
                   }
               });
-              */
+              
              res.redirect("/login");
     });//hash
 });//salt
