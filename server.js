@@ -137,12 +137,12 @@ app.get('/send-email', function (req, res) {
   var transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: 'rwzntm@gmail.com',
-      pass: 'OrtBraude3112@'
+      user: 'wefixbraudeproject@gmail.com',
+      pass: 'Wefix123456'
     }
   });
   var mailOptions= {
-    from: "rwzntm@gmail.com",
+    from: "wefixbraudeproject@gmail.com",
     to:"tomro91@gmail.com",
     subject:"check sucess",
     text:"tom is in the air"
