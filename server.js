@@ -131,33 +131,6 @@ app.get("/usernotfoundforgot",function(req,res){
       res.sendFile(__dirname+"/update-password.html",);
       });
 //======================== GET REQUESTS SECTION END ========================//
-//=========================send mail example to check==================
-
-app.get('/send-email', function (req, res) {
-  var transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: 'wefixbraudeproject@gmail.com',
-      pass: 'OrtBraude3112@'
-    }
-  });
-  var mailOptions= {
-    from: "wefixbraudeproject@gmail.com",
-    to:"tomro91@gmail.com",
-    subject:"check sucess",
-    text:"tom is in the air"
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Message %s sent: %s', info.messageId, info.response);
-      res.redirect("/login");
-  });
-});
-//=========================end of send mail example to check==================
-
 app.post("/signup",function(req,res){
   
   let firstname = req.body.FirstName;
@@ -326,7 +299,7 @@ app.post("/forgotPass",function(req,res){
               let transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: 'rwzntm@gmail.com',
+                  user: 'wefixbraudeproject@gmail.com',
                   pass: 'OrtBraude3112@'
                 }
               });
@@ -335,7 +308,7 @@ app.post("/forgotPass",function(req,res){
                     enc=encryptData(obj);
                     var refere='http://localhost:5500/updatepassword?userID='+enc;
                     var mailOptions = {
-                      from: 'rwzntm@gmail.com',
+                      from: 'wefixbraudeproject@gmail.com',
                       to: email,
                       subject: "'Reset your account password'",
                       html: '<h4><b>Reset Password</b></h4>' +
