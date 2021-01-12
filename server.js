@@ -191,17 +191,17 @@ app.post("/signup",function(req,res){
           }
         );
      }
-        /*
-        var transporter = nodemailer.createTransport("SMTP",{
- 
-            auth: {
-              user: 'rwzntm@gmail.com',
-              pass: 'OrtBraude3112@'
-            }
-          });
+        
+     var transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: 'wefixbraudeproject@gmail.com',
+        pass: 'OrtBraude3112@'
+      }
+    });
                 
                 var mailOptions = {
-                  from: 'rwzntm@gmail.com',
+                  from: "wefixbraudeproject@gmail.com",
                   to: userSignUp,
                   subject: "your registration was successfully",
                   text: "your registration details are:\n email:\n"+userSignUp + "\npassword:\n"+passSignUp
@@ -215,7 +215,7 @@ app.post("/signup",function(req,res){
                     console.log('Email sent: ' + info.response);
                   }
               });
-              */
+              
              res.redirect("/login");
     });//hash
 });//salt
@@ -277,16 +277,16 @@ app.post("/updatePass",function(req,res){
        (err1, result1) => {
          console.log(err1);
 
-         let transporter = nodemailer.createTransport({
-          service: 'gmail',
+         var transporter = nodemailer.createTransport({
+          service: "Gmail",
           auth: {
-            user: 'rwzntm@gmail.com',
+            user: 'wefixbraudeproject@gmail.com',
             pass: 'OrtBraude3112@'
           }
         });
               
               var mailOptions = {
-                from: 'rwzntm@gmail.com',
+                from: 'wefixbraudeproject@gmail.com',
                 to: result1.rows[0].email,
                 subject: "reseting password successfully",
                 text: "your password reseted successfully"
