@@ -87,7 +87,17 @@ app.get("/login",function(req,res){
   res.redirect("/dashboard");
   
   });
-
+  app.get("/logout",function(req,res){
+    if(req.cookies["id"]!=undefined && req.cookies["password"]!=undefined && req.cookies["email"]!=undefined)
+    {
+      res.clearCookie("id");
+      res.clearCookie("password");
+      res.clearCookie("email");
+    
+    } 
+    res.redirect("/login");
+ 
+  })
   //======================== GET DASHBOARD PAGE ========================//
   app.get('/dashboard', (req, res) => {
         res.sendFile(__dirname + '/dashboard.html');
