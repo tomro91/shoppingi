@@ -134,22 +134,20 @@ app.get("/usernotfoundforgot",function(req,res){
 //=========================send mail example to check==================
 
 app.get('/send-email', function (req, res) {
-  let transporter = nodeMailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-          // should be replaced with real sender's account
-          user: 'rwzntm@gmail.com',
-          pass: 'OrtBraude3112@'
-      }
+  var transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: 'rwzntm@gmail.com',
+      pass: 'OrtBraude3112@'
+    }
   });
-  let mailOptions = {
-      // should be replaced with real recipient's account
-      to: 'tomro91@gmail.com',
-      subject: "check sucess",
-      text: "tom is in the air"
+  var mailOptions= {
+    from: "rwzntm@gmail.com",
+    to:"tomro91@gmail.com",
+    subject:"check sucess",
+    text:"tom is in the air"
   };
+
   transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
           return console.log(error);
