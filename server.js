@@ -306,7 +306,7 @@ app.post("/forgotPass",function(req,res){
                     var userId=result.rows[0].id;
                     var obj={id:userId};
                     enc=encryptData(obj);
-                    var refere='http://localhost:5500/updatepassword?userID='+enc;
+                    var refere='https://tomro95-heroku-app.herokuapp.com/forgotpassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
                       to: email,
