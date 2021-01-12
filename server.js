@@ -156,6 +156,7 @@ app.get('/send-email', function (req, res) {
       }
       console.log('Message %s sent: %s', info.messageId, info.response);
   });
+});
 //=========================end of send mail example to check==================
 
 app.post("/signup",function(req,res){
