@@ -127,6 +127,7 @@ app.get("/usernotfoundforgot",function(req,res){
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
       dec= decryptData(req.query.userID);
+      console.log("id is",dec);
       res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
