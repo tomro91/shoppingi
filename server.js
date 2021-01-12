@@ -138,7 +138,7 @@ app.get('/send-email', function (req, res) {
     service: "Gmail",
     auth: {
       user: 'wefixbraudeproject@gmail.com',
-      pass: 'Wefix123456'
+      pass: 'OrtBraude3112@'
     }
   });
   var mailOptions= {
