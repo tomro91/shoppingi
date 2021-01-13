@@ -252,6 +252,10 @@ app.post("/updatePass",function(req,res){
   let psw=req.body.passwordUpdate;
   let pswAgain=req.body.passwordUpdateAgain;
   var userID=req.cookies['Forget'];
+  if(userID==undefined){
+    res.redirect("/signup");
+    return;
+  }
   bcrypt.genSalt(saltRounds, (err, salt) => {
     bcrypt.hash(psw,salt,(err, hash) => {
       client.query("UPDATE users  SET password = $1   WHERE id = $2;",[hash,userID],
