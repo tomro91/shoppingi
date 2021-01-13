@@ -71,8 +71,8 @@ var password = 'ojisdasjdsjabdjs';
         }
 function encryptData(data) {
     try {
-    let iv = crypto.randomBytes(16);
-    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    
+    
     let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
     let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
     return iv.toString('base64') + ':' + encryptedData.toString('base64');
@@ -86,9 +86,9 @@ function encryptData(data) {
   function decryptData(encData) {
  
     var textParts = encData.split(':');
-    var iv = Buffer.from(textParts.shift(), 'base64');
+    
     var encryptedData = Buffer.from(textParts.join(':'), 'base64');
-    var key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    
     var decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
     var decryptedData = decipher.update(encryptedData);
     decryptedData = Buffer.concat([decryptedData, decipher.final()]);
