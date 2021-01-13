@@ -13,15 +13,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 2;
 //==========encrypt and decrypt=====
 const crypto = require('crypto');
-const secret = 'appSecretKey';
-const rounds = 9921;
-const keySize = 32;
-const algorithm = 'aes-256-cbc';
 const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const host = '0.0.0.0';
-const port = process.env.PORT||3000 ;
-
-
+//==========DB CONNECTION============//
 const client = new Client({
   user: "uxutkqppeiihfi",
   password: "7556fa45fb6e4cc26be0ca1219e2e99072934d1e293b968d7a060e03505ba864",
@@ -30,72 +24,23 @@ const client = new Client({
   database: "d2831bevpqn6sp"
 })
 
-//======================FUNCTIONS====================================
-var password = 'ojisdasjdsjabdjs';
-        var iv = 'kiamdksndn';
+//======================Encrypt&Decrypt FUNCTIONS====================================
+const algorithm = 'aes-256-gcm';
+const password = 'Password used to generate key';
+const key = crypto.scryptSync(password, 'SomeSalt', 32);
+const iv = crypto.randomBytes(32); // Initialization vector.
+function encrypt(text){
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let crypted = cipher.update(text,'utf8','hex');
+  crypted += cipher.final('hex');
+  return crypted;
+}
 
-        function sha1(input) {
-            return crypto.createHash('sha1').update(input).digest();
-        }
-
-        function password_derive_bytes(password, salt, iterations, len) {
-            var key = Buffer.from(password + salt);
-            for (var i = 0; i < iterations; i++) {
-                key = sha1(key);
-            }
-            if (key.length < len) {
-                var hx = password_derive_bytes(password, salt, iterations - 1, 20);
-                for (var counter = 1; key.length < len; ++counter) {
-                    key = Buffer.concat([key, sha1(Buffer.concat([Buffer.from(counter.toString()), hx]))]);
-                }
-            }
-            return Buffer.alloc(len, key);
-        }
-
-
-        async function encode(string) {
-            var key = password_derive_bytes(password, '', 100, 32);
-            var cipher = crypto.createCipheriv('aes-256-cbc', key, Buffer.from(iv));
-            var part1 = cipher.update(string, 'utf8');
-            var part2 = cipher.final();
-            const encrypted = Buffer.concat([part1, part2]).toString('base64');
-            return encrypted;
-        }
-
-        async function decode(string) {
-            var key = password_derive_bytes(password, '', 100, 32);
-            var decipher = crypto.createDecipheriv('aes-256-cbc', key, Buffer.from(iv));
-            var decrypted = decipher.update(string, 'base64', 'utf8');
-            decrypted += decipher.final();
-            return decrypted;
-        }
-function encryptData(data) {
-    try {
-    
-    
-    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
-    return iv.toString('base64') + ':' + encryptedData.toString('base64');
-    }
-    catch (err) {
-    console.error(err)
-    return false;
-    }
-  }
-
-  function decryptData(encData) {
- 
-    var textParts = encData.split(':');
-    
-    var encryptedData = Buffer.from(textParts.join(':'), 'base64');
-    
-    var decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
-    var decryptedData = decipher.update(encryptedData);
-    decryptedData = Buffer.concat([decryptedData, decipher.final()]);
-    return JSON.parse(decryptedData.toString());
- 
-  }
-    
+function decrypt(text){
+  let decipher = crypto.createDecipheriv(algorithm, key, iv);
+  let dec = decipher.update(text,'hex','utf8');
+  return dec;
+}
 
 
 //======================== GET REQUESTS SECTION ========================//
@@ -171,9 +116,9 @@ app.get("/usernotfoundforgot",function(req,res){
 
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
-      dec= decryptData(req.query.userID);
+      dec= decrypt(req.query.userID);
       console.log(dec);
-      res.cookie("Forget",parseInt(dec['id']),{maxAge:1*60*60*1000,httpOnly:true});
+      res.cookie("Forget",dec,{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
 //======================== GET REQUESTS SECTION END ========================//
@@ -354,9 +299,7 @@ app.post("/forgotPass",function(req,res){
                 }
               });
                     var userId=result.rows[0].id;
-                    var obj={id:userId};
-                    console.log(obj['id']);
-                    enc=encryptData(obj);
+                    enc=encrypt(""+userId);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
