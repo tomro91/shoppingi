@@ -21,7 +21,6 @@ function ForgotPasswordValFunction(){
         return true;
        }
         else{
-            resetBtn.disabled = true;
         return false;
         }
     
