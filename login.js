@@ -1,11 +1,18 @@
-function checkRecaptcha() {
-    var response = grecaptcha.getResponse();
-    if(response.length == 0) { 
-    }else{
-      return 1;
-    }
-  }
 
+  function checkRecaptcha() 
+  {
+      var v = grecaptcha.getResponse();
+      if(v.length == 0)
+      {
+          document.getElementById('captcha').innerHTML="You can't leave Captcha Code empty";
+          return false;
+      }
+      else
+      {
+           document.getElementById('captcha').innerHTML="Captcha completed";
+          return true; 
+      }
+  }
 
 
 function signInValidate() 
@@ -17,8 +24,8 @@ var userField = document.getElementById("exampleInputEmaillogin");
 var passField = document.getElementById("exampleInputPasswordlogin");
 var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const rmCheck = document.getElementById("customCheck");
-var flag = checkRecaptcha();
-
+var flagRecaptcha = checkRecaptcha();
+var flag=true;
 if(user=='')
 {
     userField.focus();
@@ -75,9 +82,11 @@ if(!user.match(mailformat))
         return false;  
        }
 
-      if(flag==1)  
+      if(flag==true&&flagRecaptcha==true)  
       
        return true;
+       else
+       return false;
 }
 
 
