@@ -101,7 +101,7 @@ app.get("/login",function(req,res){
   //======================== GET DASHBOARD PAGE ========================//
   app.get('/dashboard', (req, res) => {
         res.sendFile(__dirname + '/dashboard.html');
-        $("#userFullName").text('Tom Rosenwasser');
+       // $("#userFullName").text('Tom Rosenwasser');
 });
  //======================== GET userProfile PAGE ========================//
 app.get('/profile', (req, res) => {
