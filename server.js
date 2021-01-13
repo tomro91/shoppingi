@@ -6,14 +6,22 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 var nodemailer = require('nodemailer');
+var smtpTransport=require('nodemailer-smtp-transport');
+var urlCrypt = require('url-crypt')('~{ry*I)==yU/]9<7DPk!Hj"R#:-/Z7(hTBnlRS=4CXF');
 app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
 //==========encrypt and decrypt=====
 const crypto = require('crypto');
+const secret = 'appSecretKey';
+const rounds = 9921;
+const keySize = 32;
+const algorithm = 'aes-256-cbc';
 const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const host = '0.0.0.0';
-//==========DB CONNECTION============//
+const port = process.env.PORT||3000 ;
+
+
 const client = new Client({
   user: "uxutkqppeiihfi",
   password: "7556fa45fb6e4cc26be0ca1219e2e99072934d1e293b968d7a060e03505ba864",
@@ -22,23 +30,38 @@ const client = new Client({
   database: "d2831bevpqn6sp"
 })
 
-//======================Encrypt&Decrypt FUNCTIONS====================================
-const algorithm = 'aes-256-gcm';
-const password = 'Password used to generate key';
-const key = crypto.scryptSync(password, 'SomeSalt', 32);
-const iv = crypto.randomBytes(32); // Initialization vector.
-function encrypt(text){
-  const cipher = crypto.createCipheriv(algorithm, key, iv);
-  let crypted = cipher.update(text,'utf8','hex');
-  crypted += cipher.final('hex');
-  return crypted;
-}
+//======================FUNCTIONS====================================
+function encryptData(data) {
+    try {
+    let iv = crypto.randomBytes(16);
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
+    return iv.toString('base64') + ':' + encryptedData.toString('base64');
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
+  }
 
-function decrypt(text){
-  let decipher = crypto.createDecipheriv(algorithm, key, iv);
-  let dec = decipher.update(text,'hex','utf8');
-  return dec;
-}
+  function decryptData(encData) {
+    try {
+    let textParts = encData.split(':');
+    let iv = Buffer.from(textParts.shift(), 'base64');
+    let encryptedData = Buffer.from(textParts.join(':'), 'base64');
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+    let decryptedData = decipher.update(encryptedData);
+    decryptedData = Buffer.concat([decryptedData, decipher.final()]);
+    return JSON.parse(decryptedData.toString());
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
+    }
+    
 
 
 //======================== GET REQUESTS SECTION ========================//
@@ -114,9 +137,9 @@ app.get("/usernotfoundforgot",function(req,res){
 
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
-      dec= decrypt(req.query.userID);
-      console.log("id:",dec);
-      res.cookie("Forget",dec,{maxAge:1*60*60*1000,httpOnly:true});
+      dec= decryptData(req.query.userID);
+      console.log("id is",dec);
+      res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
 //======================== GET REQUESTS SECTION END ========================//
@@ -297,7 +320,8 @@ app.post("/forgotPass",function(req,res){
                 }
               });
                     var userId=result.rows[0].id;
-                    enc=encrypt(""+userId);
+                    var obj={id:userId};
+                    enc=encryptData(obj);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
