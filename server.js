@@ -177,7 +177,7 @@ app.get("/usernotfoundforgot",function(req,res){
     app.get("/updatepassword",function(req,res){
       dec= decryptData(req.query.userID);
       console.log("id is",dec);
-      res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
+      res.cookie("Forget",parseInt(dec['id']),{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
 //======================== GET REQUESTS SECTION END ========================//
