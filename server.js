@@ -137,7 +137,7 @@ app.get("/usernotfoundforgot",function(req,res){
 
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
-      dec= decryptData(req.query);
+      var dec = decryptData(req.query);
       console.log("id is",dec);
       res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
@@ -321,8 +321,8 @@ app.post("/forgotPass",function(req,res){
               });
                     var userId=result.rows[0].id;
                     var obj={id:userId};
-                    enc=encryptData(obj);
-                    var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?'+enc;
+                    var enc=encryptData(obj);
+                    var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
                       to: email,
