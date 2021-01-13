@@ -6,8 +6,6 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 var nodemailer = require('nodemailer');
-var smtpTransport=require('nodemailer-smtp-transport');
-var urlCrypt = require('url-crypt')('~{ry*I)==yU/]9<7DPk!Hj"R#:-/Z7(hTBnlRS=4CXF');
 app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
@@ -117,7 +115,7 @@ app.get("/usernotfoundforgot",function(req,res){
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
       dec= decrypt(req.query.userID);
-      console.log(dec);
+      console.log("id:",dec);
       res.cookie("Forget",dec,{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
