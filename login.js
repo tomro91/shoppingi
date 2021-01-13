@@ -1,10 +1,10 @@
-/*function checkRecaptcha() {
+function checkRecaptcha() {
     var response = grecaptcha.getResponse();
     if(response.length == 0) { 
     }else{
       return 1;
     }
-  }*/
+  }
 
 
 
@@ -17,7 +17,7 @@ var userField = document.getElementById("exampleInputEmaillogin");
 var passField = document.getElementById("exampleInputPasswordlogin");
 var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const rmCheck = document.getElementById("customCheck");
-//var flag = checkRecaptcha();
+var flag = checkRecaptcha();
 
 if(user=='')
 {
@@ -75,7 +75,7 @@ if(!user.match(mailformat))
         return false;  
        }
 
-      // if(flag==1)  
+      if(flag==1)  
       
        return true;
 }
