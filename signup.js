@@ -1,11 +1,3 @@
-/*function checkRecaptcha() {
-    var response = grecaptcha.getResponse();
-    if(response.length == 0) { 
-    }else{
-      return 1;
-    }
-  }*/
-
 
 function RegisterValFunction(){
     //gets the email and password entered
@@ -21,12 +13,12 @@ function RegisterValFunction(){
     var secondPassword = document.getElementById("exampleRepeatPassword").value;
     var promoCode = document.getElementById("examplePromoCode").value;
     var promoCodeField = document.getElementById("examplePromoCode");
-   // var signUpModal = document.getElementById("exampleModal");
-   
+    var flagRecaptcha = checkRecaptcha();
+    var flag=true;
 
     //email validation
     var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-   // var flag = checkRecaptcha();
+
 
     if(firstName=="")
     {
@@ -102,10 +94,17 @@ function RegisterValFunction(){
                return false;
            }
 
-         // if(flag==1)
          
+         if(flag==true&&flagRecaptcha==true) {
          $("#exampleModal").modal("show");
-          return true;
+      
+         return true;
+        }
+         else
+         return false;
+         
+         
+          
 
         
     }

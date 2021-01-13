@@ -19,6 +19,26 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <script>
+        function checkRecaptcha() 
+       {
+     var v = grecaptcha.getResponse();
+     if(v.length == 0)
+     {
+         document.getElementById('exampleInputPassword').focus();
+         document.getElementById('exampleInputPassword').title="You can't leave Captcha Code empty";
+         return false;
+     }
+     else
+     {
+         document.getElementById('exampleInputPassword').focus();
+         document.getElementById('exampleInputPassword').title="Captcha completed";
+         return true; 
+     }
+ }
+   </script>
+   <script src='https://www.google.com/recaptcha/api.js'></script>
+
     <script type = "text/javascript" src="signup.js"></script>
   
 </head>
@@ -70,7 +90,8 @@
                                     placeholder="Have a Promo Code" name="promo" value=>
                                     </div>
 
-                                      <!--<div class="g-recaptcha" data-callback="function"  data-sitekey="sitekey"></div>!-->
+                                    <div class="g-recaptcha" data-callback="function" id="captchaSignUp"  data-sitekey="6Le8uioaAAAAAJ5gFpYndkE_7Hw-u_I2L7EXzggn"></div>
+
                                 </div>
                                    
                                 <input class="btn btn-primary btn-user btn-block" style="display: block" type="submit" value="Register " id="signInBtn">
