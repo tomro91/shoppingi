@@ -15,14 +15,14 @@
       var v = grecaptcha.getResponse();
       if(v.length == 0)
       {
-          document.getElementById('captcha').focus();
-          document.getElementById('captcha').title="You can't leave Captcha Code empty";
+          document.getElementById('exampleInputPasswordlogin').focus();
+          document.getElementById('exampleInputPasswordlogin').title="You can't leave Captcha Code empty";
           return false;
       }
       else
       {
-          document.getElementById('captcha').focus();
-          document.getElementById('captcha').title="Captcha completed";
+          document.getElementById('exampleInputPasswordlogin').focus();
+          document.getElementById('exampleInputPasswordlogin').title="Captcha completed";
           return true; 
       }
   }
