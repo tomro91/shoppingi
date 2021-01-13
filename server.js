@@ -84,20 +84,16 @@ function encryptData(data) {
   }
 
   function decryptData(encData) {
-    try {
-    let textParts = encData.split(':');
-    let iv = Buffer.from(textParts.shift(), 'base64');
-    let encryptedData = Buffer.from(textParts.join(':'), 'base64');
-    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
-    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
-    let decryptedData = decipher.update(encryptedData);
+ 
+    var textParts = encData.split(':');
+    var iv = Buffer.from(textParts.shift(), 'base64');
+    var encryptedData = Buffer.from(textParts.join(':'), 'base64');
+    var key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    var decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+    var decryptedData = decipher.update(encryptedData);
     decryptedData = Buffer.concat([decryptedData, decipher.final()]);
     return JSON.parse(decryptedData.toString());
-    }
-    catch (err) {
-    console.error(err)
-    return false;
-    }
+ 
   }
     
 
@@ -176,7 +172,7 @@ app.get("/usernotfoundforgot",function(req,res){
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
       dec= decryptData(req.query.userID);
-      console.log("id is",dec);
+      console.log(dec);
       res.cookie("Forget",parseInt(dec['id']),{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
@@ -358,7 +354,7 @@ app.post("/forgotPass",function(req,res){
                 }
               });
                     var userId=result.rows[0].id;
-                    var obj={id:userId.toString()};
+                    var obj={id:userId};
                     console.log(obj['id']);
                     enc=encryptData(obj);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
