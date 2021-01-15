@@ -98,6 +98,19 @@ app.get("/login",function(req,res){
     res.redirect("/login");
  
   })
+  app.get('/getName', (req, res) => {
+    var userID=req.cookies['id1'];
+    client.query("SELECT name,familyname from users where id=$1",[userID],
+    (err, result) => {
+        var name=result.rows[0]["name"];
+        var lname=result.rows[0]["familyname"];
+        var obj={name:name,lname:lname};
+        res.send(obj);
+    }
+    );
+    
+  });
+  
   //======================== GET DASHBOARD PAGE ========================//
   app.get('/dashboard', (req, res) => {
         res.sendFile(__dirname + '/dashboard.html');
@@ -242,10 +255,11 @@ app.post("/signup",function(req,res){
             res.cookie("id",result.rows[0].id,{maxAge:1*60*60*1000,httpOnly:true});
             res.cookie("email",result.rows[0].email,{maxAge:1*60*60*1000,httpOnly:true});
             res.cookie("password",result.rows[0].password,{maxAge:1*60*60*1000,httpOnly:true});
-           }
+            res.cookie("id1",result.rows[0].id,{maxAge:1*60*60*1000,httpOnly:true});
+          }
            else if(rememberOn==undefined)
            {
-            res.cookie("id",result.rows[0].id,{maxAge:1*60*60*1000,httpOnly:true});
+            res.cookie("id1",result.rows[0].id,{maxAge:1*60*60*1000,httpOnly:true});
 
            }
           

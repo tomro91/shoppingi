@@ -307,11 +307,9 @@
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
-        var name="tom";
-        var lname="rosenwasser";
-        $.get('/getName', 	function (data, textStatus, xhr) {
-                    alert('status: ' + textStatus + ', data:' + data);
-                   // $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+data+'</span>');
+      $.get('/getName', 	function (data, textStatus, xhr) {
+                    //alert('status: ' + textStatus + ', data:' + data['name']);
+                    $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+data['name']+" "+data['lname']+'</span>');
 	}
     );
        
