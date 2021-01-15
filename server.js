@@ -364,7 +364,32 @@ app.post("/forgotPass",function(req,res){
     
      });
 });
+app.post("/setpassword",function(req,res){
 
+
+  var password = req.body.newPassword;
+  var userID = req.cookies['id1'];
+  var oldPassword = req.body.oldPassword;
+  var confirmPassword = req.body.confirmNewpassword;
+  
+  bcrypt.genSalt(saltRounds, (err, salt) => {
+    bcrypt.hash(password,salt,(err, hash) => {
+      client.query("UPDATE users SET password = $1 where id = $2",[hash,userID],
+      
+      (err, result) => {
+        console.log(err, result);
+        //if ok redirect to dashboard
+        res.redirect("/dashboard");
+      }
+    
+    );
+  
+  
+  
+  
+  });
+  });
+  });
 
 
 //listening to port 5500
