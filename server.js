@@ -11,9 +11,9 @@ app.use(express.static(__dirname));
 const crypto = require('crypto');
 const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const saltRounds = 2;
-var SimpleCrypto = require("simple-crypto-js").default
-const secretKey = "some-unique-key"
-const simpleCrypto = new SimpleCrypto(secretKey)
+var SimpleCrypto = require("simple-crypto-js").default;
+const secretKey = "some-unique-key";
+const simpleCrypto = new SimpleCrypto(secretKey);
 
 //==========DB Connection=====================================
 const client = new Client({
@@ -22,7 +22,7 @@ const client = new Client({
   host: "ec2-176-34-114-78.eu-west-1.compute.amazonaws.com",
   port: 5432,
   database: "d2831bevpqn6sp"
-})
+});
 
 
 
