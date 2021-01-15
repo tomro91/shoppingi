@@ -11,9 +11,6 @@ var urlCrypt = require('url-crypt')('~{ry*I)==yU/]9<7DPk!Hj"R#:-/Z7(hTBnlRS=4CXF
 app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
-var AESCrypt = {};
-var cryptkey = crypto.createHash('sha256').update('Nixnogen').digest();
-var iv = 'a2xhcgAAAAAAAAAA';
 //==========encrypt and decrypt=====
 const crypto = require('crypto');
 const secret = 'appSecretKey';
@@ -34,23 +31,35 @@ const client = new Client({
 })
 
 //======================FUNCTIONS====================================
-function encryptData( cleardata) {
-  var encipher = crypto.createCipheriv('aes-256-cbc', cryptkey, iv),
-  encryptdata = encipher.update(cleardata);
-  
-  encryptdata += encipher.final();
-  encode_encryptdata = new Buffer(encryptdata, 'binary').toString('base64');
-  return encode_encryptdata;
+function encryptData(data) {
+    try {
+    let iv = crypto.randomBytes(16);
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
+    return iv.toString('base64') + ':' + encryptedData.toString('base64');
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
   }
 
-  function decryptData( encryptdata) {
-    encryptdata = new Buffer(encryptdata, 'base64').toString('binary');
-    
-    var decipher = crypto.createDecipheriv('aes-256-cbc', cryptkey, iv),
-    decoded = decipher.update(encryptdata);
-    
-    decoded += decipher.final();
-    return decoded;
+  function decryptData(encData) {
+    try {
+    let textParts = encData.split(':');
+    let iv = Buffer.from(textParts.shift(), 'base64');
+    let encryptedData = Buffer.from(textParts.join(':'), 'base64');
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+    let decryptedData = decipher.update(encryptedData);
+    decryptedData = Buffer.concat([decryptedData, decipher.final()]);
+    return JSON.parse(decryptedData.toString());
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
     }
     
 
@@ -162,14 +171,14 @@ app.get("/usernotfoundforgot",function(req,res){
     app.get("/updatepassword",function(req,res){
       var dec = decryptData(req.query.userID);
       console.log("id is",dec);
-      res.cookie("Forget",dec,{maxAge:1*60*60*1000,httpOnly:true});
+      res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
 
 
       app.get('/getName', (req, res) => {
         var userID=req.cookies['id'];
-        client.query("SELECT name,familyname from users where id=$1",[userID],
+        client.query("SELECT name,familyname from users where id=$1",[id],
         (err, result) => {
             var name=result.rows[0]["name"];
             var lname=result.rows[0]["familyname"];
@@ -361,7 +370,7 @@ app.post("/forgotPass",function(req,res){
               });
                     var userId=result.rows[0].id;
                     var obj={id:userId};
-                    var enc=encryptData(userId);
+                    let enc=encryptData(obj);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
@@ -384,39 +393,10 @@ app.post("/forgotPass",function(req,res){
                         console.log('Email sent: ' + info.response);
                       }
                   });
+      
       }
     
      });
-});
-
-
-
-
-app.post("/setpassword",function(req,res){
-
-
-var password = req.body.newPassword;
-var userID = req.cookies['id1'];
-var oldPassword = req.body.oldPassword;
-var confirmPassword = req.body.confirmNewpassword;
-
-bcrypt.genSalt(saltRounds, (err, salt) => {
-  bcrypt.hash(password,salt,(err, hash) => {
-    client.query("UPDATE users SET password = $1 where id = $2",[hash,userID],
-    
-    (err, result) => {
-      console.log(err, result);
-      //if ok redirect to dashboard
-      res.redirect("/dashboard");
-    }
-  
-  );
-
-
-
-
-});
-});
 });
 
 
