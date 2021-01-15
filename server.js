@@ -36,7 +36,7 @@ function encryptData(data) {
     let iv = crypto.randomBytes(16);
     let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
     let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
-    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
+    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data),'utf8', 'binary'), cipher.final('binary')]);
     return iv.toString('base64') + ':' + encryptedData.toString('base64');
     }
     catch (err) {
@@ -52,8 +52,8 @@ function encryptData(data) {
     let encryptedData = Buffer.from(textParts.join(':'), 'base64');
     let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
     let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
-    let decryptedData = decipher.update(encryptedData);
-    decryptedData = Buffer.concat([decryptedData, decipher.final()]);
+    let decryptedData = decipher.update(encryptedData, 'binary', 'utf8');
+    decryptedData = Buffer.concat([decryptedData, decipher.final('utf8')]);
     return JSON.parse(decryptedData.toString());
     }
     catch (err) {
