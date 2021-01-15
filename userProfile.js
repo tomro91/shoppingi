@@ -76,6 +76,8 @@ msgPassword="Invalid password:\n";
                 confirmPasswordField.title="passwords are not matched";
                return false;
            }
+
+           $("#exampleModalUserProfile").modal("show");
            return true;
     }
 

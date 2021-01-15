@@ -393,10 +393,39 @@ app.post("/forgotPass",function(req,res){
                         console.log('Email sent: ' + info.response);
                       }
                   });
-      
       }
     
      });
+});
+
+
+
+
+app.post("/setpassword",function(req,res){
+
+
+var password = req.body.newPassword;
+var userID = res.cookies['id1'];
+var oldPassword = req.body.oldPassword;
+var confirmPassword = req.body.confirmNewpassword;
+
+bcrypt.genSalt(saltRounds, (err, salt) => {
+  bcrypt.hash(password,salt,(err, hash) => {
+    client.query("UPDATE users SET password = $1 where id = $2",[hash,userID],
+    
+    (err, res) => {
+      console.log(err, res);
+      //if ok redirect to dashboard
+      res.redirect("/dashboard");
+    }
+  
+  );
+
+
+
+
+});
+});
 });
 
 

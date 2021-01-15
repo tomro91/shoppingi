@@ -190,11 +190,11 @@
 
                 <div class="row">
                     <div class="col">
-                        <form onsubmit="if(!userProfileValidate()) return false">
+                        <form action ="/setpassword" method="POST" onsubmit="if(!userProfileValidate()) return false">
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="inputOldPassword">Old password</label>
-                                    <input type="password" class="form-control" id="inputOldPassword">
+                                    <input type="password" class="form-control" id="inputOldPassword" name="oldPassword">
                                 </div>
                                 
                             </div>
@@ -202,15 +202,38 @@
                             <div class="form-row align-items-end">
                                 <div class="form-group col">
                                     <label for="inputNewPassword">New password</label>
-                                    <input type="password" class="form-control" id="inputNewPassword">
+                                    <input type="password" class="form-control" id="inputNewPassword" name="newPassword">
                                 </div>
                                 <div class="form-group col">
                                     <label for="inputConfirmPassword">Confrim password</label>
-                                    <input type="password" class="form-control" id="inputConfirmPassword">
+                                    <input type="password" class="form-control" id="inputConfirmPassword" name="confirmNewpassword">
                                 </div>
                             </div>
         
-                            <button type="submit" class="btn btn-primary col">Change password</button>
+                            <input class="btn btn-primary btn-user btn-block" style="display: block" type="submit" value="Change Password " id="changePassword">
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalUserProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+         
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            we are changing your password! if we will success, you will be directed to dashboard page
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
                         </form>
                     </div>
                     <div class="col" style="margin-left: 3%;">
