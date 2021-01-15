@@ -344,7 +344,7 @@ app.post("/forgotPass",function(req,res){
                       subject: "'Reset your account password'",
                       html: '<h4><b>Reset Password</b></h4>' +
                            '<p>To reset your password, complete this form:</p>' +
-                           '<a href= '+ refere+'>/http://localhost:5500/updatepassword/</a>'+
+                           '<a href= '+ refere+'>/https://tomro95-heroku-app.herokuapp.com/updatepassword/</a>'+
                           
                            '<br><br>' 
                       
