@@ -12,12 +12,7 @@ app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
 //==========encrypt and decrypt=====
-var crypto = require('crypto');
- var algorithm = 'aes-256-gcm';
- var password = '3zTvzr3p67VC61jmV54rIYu1545x4TlY';
-
-  iv = '60iP0h6vJoEa';
-
+const crypto = require('crypto');
 const secret = 'appSecretKey';
 const rounds = 9921;
 const keySize = 32;
@@ -37,17 +32,34 @@ const client = new Client({
 
 //======================FUNCTIONS====================================
 function encryptData(data) {
-  var cipher = crypto.createCipheriv(algorithm, password, iv)
-  var encrypted = cipher.update(text, 'utf8', 'hex')
-  encrypted += cipher.final('hex');
-  return encrypted;
+    try {
+    let iv = crypto.randomBytes(16);
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+    let encryptedData = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
+    return iv.toString('base64') + ':' + encryptedData.toString('base64');
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
   }
 
   function decryptData(encData) {
-    var decipher = crypto.createDecipheriv(algorithm, password, iv)
-  var dec = decipher.update(encData, 'hex', 'utf8')
-  dec += decipher.final('utf8');
-  return dec;
+    try {
+    let textParts = encData.split(':');
+    let iv = Buffer.from(textParts.shift(), 'base64');
+    let encryptedData = Buffer.from(textParts.join(':'), 'base64');
+    let key = crypto.pbkdf2Sync(secret, salt, rounds, keySize, 'sha512');
+    let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+    let decryptedData = decipher.update(encryptedData);
+    decryptedData = Buffer.concat([decryptedData, decipher.final()]);
+    return JSON.parse(decryptedData.toString());
+    }
+    catch (err) {
+    console.error(err)
+    return false;
+    }
     }
     
 
@@ -358,7 +370,7 @@ app.post("/forgotPass",function(req,res){
               });
                     var userId=result.rows[0].id;
                     var obj={id:userId};
-                    let enc=encryptData(userId);
+                    let enc=encryptData(obj);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
