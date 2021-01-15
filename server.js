@@ -9,7 +9,8 @@ var nodemailer = require('nodemailer');
 app.use(express.static(__dirname));
 //==========encrypt and decrypt=====
 const crypto = require('crypto');
-const salt = crypto.createHash('sha1').update(secretKey).digest("hex");
+const secret = 'appSecretKey';
+//const salt = crypto.createHash('sha1').update(secret).digest("hex");
 const saltRounds = 2;
 var SimpleCrypto = require("simple-crypto-js").default;
 const secretKey = "some-unique-key";
