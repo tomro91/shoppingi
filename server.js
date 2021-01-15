@@ -88,6 +88,8 @@ app.get("/login",function(req,res){
   
   });
   app.get("/logout",function(req,res){
+   
+    res.clearCookie("id1");
     if(req.cookies["id"]!=undefined && req.cookies["password"]!=undefined && req.cookies["email"]!=undefined)
     {
       res.clearCookie("id");
@@ -110,7 +112,24 @@ app.get("/login",function(req,res){
     );
     
   });
-  
+  app.get('/getDetails', (req, res) => {
+    var userID=req.cookies['id1'];
+    client.query("SELECT name,familyname,phonenumber,country,email,city,street,zipcode from users where id=$1",[userID],
+    (err, result) => {
+        var name=result.rows[0]["name"];
+        var lname=result.rows[0]["familyname"];
+        var phone=result.rows[0]["phonenumber"];
+        var country=result.rows[0]["country"];
+        var email=result.rows[0]["email"];
+        var city=result.rows[0]["city"];
+        var street=result.rows[0]["street"];
+        var zipcode=result.rows[0]["zipcode"];
+        var obj={name:name,lname:lname,phone:phone,country:country,email:email,city:city,street:street,zipcode:zipcode};
+        res.send(obj);
+    }
+    );
+    
+  });
   //======================== GET DASHBOARD PAGE ========================//
   app.get('/dashboard', (req, res) => {
         res.sendFile(__dirname + '/dashboard.html');
