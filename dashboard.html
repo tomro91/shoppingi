@@ -309,7 +309,7 @@
     <script>
       $.get('/getName', 	function (data, textStatus, xhr) {
                     var firstName=data['name'].charAt(0).toUpperCase()+data['name'].slice(1);
-                    var lastName=data['lname'].charAt(0).toUpperCase()+data['name'].slice(1);
+                    var lastName=data['lname'].charAt(0).toUpperCase()+data['lname'].slice(1);
                     $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+firstName+" "+lastName+'</span>');
 	}
     );
