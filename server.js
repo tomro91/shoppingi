@@ -367,7 +367,7 @@ app.post("/forgotPass",function(req,res){
 
 
 //listening to port 5500
-app.listen(process.env.PORT||5500,host);
+app.listen(process.env.PORT||3000);
 console.log("listening....");
 client.connect()
 .then(() => console.log("client Connected to database successfuly"))
