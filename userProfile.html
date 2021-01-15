@@ -105,7 +105,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"id="userFullName">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -289,11 +289,18 @@
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
         $.get('/getDetails', 	function (data, textStatus, xhr) {
-            alert(data['country']);
-                      //var firstName=data['name'].charAt(0).toUpperCase()+data['name'].slice(1);
-                      //var lastName=data['lname'].charAt(0).toUpperCase()+data['lname'].slice(1);
-                      //$("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+firstName+" "+lastName+'</span>');
-      }
+            
+                      var firstName=data['name'].charAt(0).toUpperCase()+data['name'].slice(1);
+                      var lastName=data['lname'].charAt(0).toUpperCase()+data['lname'].slice(1);
+                      var phone=data["phone"];
+                      var country=data["country"];
+                      var email=data["email"];
+                      var city=data["city"];
+                      var street=data["street"];
+                      var zipcode=data["zipcode"];
+                      $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+firstName+" "+lastName+'</span>');
+
+                    }
       );
          
       </script>
