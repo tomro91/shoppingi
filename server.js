@@ -405,7 +405,7 @@ app.post("/setpassword",function(req,res){
 
 
 var password = req.body.newPassword;
-var userID = res.cookies['id1'];
+var userID = req.cookies['id1'];
 var oldPassword = req.body.oldPassword;
 var confirmPassword = req.body.confirmNewpassword;
 
