@@ -169,7 +169,7 @@ app.get("/usernotfoundforgot",function(req,res){
 
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
-      let dec = decryptData(req.query.userID);
+      var dec = decryptData(req.query.userID);
       console.log("id is",dec);
       res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
@@ -178,7 +178,7 @@ app.get("/usernotfoundforgot",function(req,res){
 
       app.get('/getName', (req, res) => {
         var userID=req.cookies['id'];
-        client.query("SELECT name,familyname from users where id=$1",[id],
+        client.query("SELECT name,familyname from users where id=$1",[userID],
         (err, result) => {
             var name=result.rows[0]["name"];
             var lname=result.rows[0]["familyname"];
@@ -370,7 +370,7 @@ app.post("/forgotPass",function(req,res){
               });
                     var userId=result.rows[0].id;
                     var obj={id:userId};
-                    let enc=encryptData(obj);
+                    var enc=encryptData(obj);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
