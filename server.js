@@ -413,8 +413,8 @@ bcrypt.genSalt(saltRounds, (err, salt) => {
   bcrypt.hash(password,salt,(err, hash) => {
     client.query("UPDATE users SET password = $1 where id = $2",[hash,userID],
     
-    (err, res) => {
-      console.log(err, res);
+    (err, result) => {
+      console.log(err, result);
       //if ok redirect to dashboard
       res.redirect("/dashboard");
     }
