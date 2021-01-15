@@ -308,8 +308,9 @@
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
       $.get('/getName', 	function (data, textStatus, xhr) {
-                    //alert('status: ' + textStatus + ', data:' + data['name']);
-                    $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+data['name']+" "+data['lname']+'</span>');
+                    var firstName=data['name'].charAt(0).toUpperCase()+data['name'].slice(1);
+                    var lastName=data['lname'].charAt(0).toUpperCase()+data['name'].slice(1);
+                    $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+firstName+" "+lastName+'</span>');
 	}
     );
        
