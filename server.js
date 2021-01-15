@@ -142,6 +142,21 @@ app.get("/usernotfoundforgot",function(req,res){
       res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
       });
+
+
+      app.get('/getName', (req, res) => {
+        var userID=req.cookies['id'];
+        client.query("SELECT name,familyname from users where id=$1",[id],
+        (err, result) => {
+            var name=result.rows[0]["name"];
+            var lname=result.rows[0]["familyname"];
+            var obj={name:name,lname:lname};
+            res.send(obj);
+        }
+      );
+      });
+      
+
 //======================== GET REQUESTS SECTION END ========================//
 app.post("/signup",function(req,res){
   
@@ -230,7 +245,8 @@ app.post("/signup",function(req,res){
            }
            else if(rememberOn==undefined)
            {
-             //do nothing
+            res.cookie("id",result.rows[0].id,{maxAge:1*60*60*1000,httpOnly:true});
+
            }
           
           res.redirect("/dashboard");
