@@ -15,6 +15,7 @@ const saltRounds = 2;
 var SimpleCrypto = require("simple-crypto-js").default;
 const secretKey = "some-unique-key";
 const simpleCrypto = new SimpleCrypto(secretKey);
+const bcrypt = require('bcrypt');
 
 //==========DB Connection=====================================
 const client = new Client({
