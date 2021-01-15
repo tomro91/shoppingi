@@ -6,22 +6,16 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:false}));
 var nodemailer = require('nodemailer');
-var smtpTransport=require('nodemailer-smtp-transport');
-var urlCrypt = require('url-crypt')('~{ry*I)==yU/]9<7DPk!Hj"R#:-/Z7(hTBnlRS=4CXF');
 app.use(express.static(__dirname));
-const bcrypt = require('bcrypt');
-const saltRounds = 2;
 //==========encrypt and decrypt=====
 const crypto = require('crypto');
-const secret = 'appSecretKey';
-const rounds = 9921;
-const keySize = 32;
-const algorithm = 'aes-256-cbc';
 const salt = crypto.createHash('sha1').update(secret).digest("hex");
-const host = '0.0.0.0';
-const port = process.env.PORT||3000 ;
+const saltRounds = 2;
+var SimpleCrypto = require("simple-crypto-js").default
+const secretKey = "some-unique-key"
+const simpleCrypto = new SimpleCrypto(secretKey)
 
-
+//==========DB Connection=====================================
 const client = new Client({
   user: "uxutkqppeiihfi",
   password: "7556fa45fb6e4cc26be0ca1219e2e99072934d1e293b968d7a060e03505ba864",
@@ -169,7 +163,7 @@ app.get("/usernotfoundforgot",function(req,res){
 
     //======================== GET PASSWORD-UPDATE PAGE ========================//
     app.get("/updatepassword",function(req,res){
-      var dec = decryptData(req.query.userID);
+      var dec = simpleCrypto.decrypt(req.query.userID);
       console.log("id is",dec);
       res.cookie("Forget",dec['id'],{maxAge:1*60*60*1000,httpOnly:true});
       res.sendFile(__dirname+"/update-password.html",);
@@ -370,7 +364,8 @@ app.post("/forgotPass",function(req,res){
               });
                     var userId=result.rows[0].id;
                     var obj={id:userId};
-                    let enc=encryptData(obj);
+                    var enc=simpleCrypto.encrypt(obj);
+                    console.log("heyy"+enc);
                     var refere='https://tomro95-heroku-app.herokuapp.com/updatepassword?userID='+enc;
                     var mailOptions = {
                       from: 'wefixbraudeproject@gmail.com',
