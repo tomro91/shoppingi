@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-
+    <script src="jquery-3.4.0.min.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -105,7 +105,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"id="userFullName">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -144,38 +144,38 @@
                     <form>
                         <div class="form-row">
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="firstName">First Name</label>
+                                <label for="firstName">First Name:</label>
                                 <label id="firstName"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="lastName">Last Name</label>
+                                <label for="lastName">Last Name:</label>
                                 <label id="lastName"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="phoneNumber">Phone Number</label>
+                                <label for="phoneNumber">Phone Number:</label>
                                 <label id="phoneNumber"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="country">Country</label>
+                                <label for="country">Country:</label>
                                 <label id="country"></label>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="email">Email</label>
+                                <label for="email">Email:</label>
                                 <label id="email"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="city">City</label>
+                                <label for="city">City:</label>
                                 <label id="city"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="street">Street</label>
+                                <label for="street">Street:</label>
                                 <label id="street"></label>
                             </div>
                             <div class="form-group col-sm-6 col-xs-12 col-md-3 col-lg-3">
-                                <label for="zipCode">Zip code</label>
+                                <label for="zipCode">Zip code:</label>
                                 <label id="zipCode"></label>
                             </div>
                         </div>
@@ -287,7 +287,35 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-
+    <script>
+        $.get('/getDetails', 	function (data, textStatus, xhr) {
+            
+                      var firstName=data['name'].charAt(0).toUpperCase()+data['name'].slice(1);
+                      var lastName=data['lname'].charAt(0).toUpperCase()+data['lname'].slice(1);
+                      var phone=data["phone"];
+                      var country=data["country"];
+                      var email=data["email"];
+                      var city=data["city"];
+                      var street=data["street"];
+                      var zipcode=data["zipcode"];
+                      $("#userFullName").html('<span class = "mr-2 d-none d-lg-inline text-gray-600 small">'+firstName+" "+lastName+'</span>');
+                      $('#firstName').html(firstName);
+                      $('#lastName').html(lastName);
+                      $('#email').html(email);
+                      if(country!=null)
+                       $('#country').html(country);
+                      if(phone!=null)
+                       $('#phoneNumber').html(phone); 
+                      if(city!=null)
+                       $('#city').html(city);
+                      if(street!=null)
+                       $('#street').html(street);
+                      if(zipcode!=null)
+                       $('#zipCode').html(zipcode);
+                    }
+      );
+         
+      </script>
 </body>
 
 </html>
