@@ -12,9 +12,9 @@ app.use(express.static(__dirname));
 const bcrypt = require('bcrypt');
 const saltRounds = 2;
 //==========encrypt and decrypt=====
-var crypto = require('crypto'),
-  algorithm = 'aes-256-gcm',
-  password = '3zTvzr3p67VC61jmV54rIYu1545x4TlY',
+var crypto = require('crypto');
+ var algorithm = 'aes-256-gcm';
+ var password = '3zTvzr3p67VC61jmV54rIYu1545x4TlY';
 
   iv = '60iP0h6vJoEa';
 
